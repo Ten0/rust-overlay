@@ -20,7 +20,10 @@ let
     if platform.isWasi then
       "${platform.parsed.cpu.name}-wasi"
     else
-      self.rust.toRustTarget platform;
+      let rustTarget = self.rust.toRustTarget platform;
+      in
+      if rustTarget == "aarch64-unknown-linux-android" then "aarch64-linux-android"
+      else rustTarget;
 
   # The platform where `rustc` is running.
   rustHostPlatform = toRustTarget self.stdenv.hostPlatform;
